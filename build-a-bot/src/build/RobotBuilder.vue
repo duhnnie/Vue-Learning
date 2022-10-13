@@ -2,33 +2,33 @@
     <div>
     <div class="top-row">
       <div class="top part">
-        <img v-bind:src="parts.heads[0].src" title="head"/>
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img v-bind:src="parts.heads[headIndex].src" title="head"/>
+        <button v-on:click="selectPreviousHead()" class="prev-selector">&#9668;</button>
+        <button v-on:click="selectNextHead()" class="next-selector">&#9658;</button>
       </div>
     </div>
     <div class="middle-row">
       <div class="left part">
-        <img v-bind:src="parts.arms[0].src" title="left arm"/>
-        <button class="prev-selector">&#9650;</button>
-        <button class="next-selector">&#9660;</button>
+        <img v-bind:src="parts.arms[leftArmIndex].src" title="left arm"/>
+        <button v-on:click="selectPreviousLeftArm()" class="prev-selector">&#9650;</button>
+        <button v-on:click="selectNextLeftArm()" class="next-selector">&#9660;</button>
       </div>
       <div class="center part">
-        <img v-bind:src="parts.torsos[0].src" title="left arm"/>
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img v-bind:src="parts.torsos[torsoIndex].src" title="left arm"/>
+        <button v-on:click="selectPreviousTorso()" class="prev-selector">&#9668;</button>
+        <button v-on:click="selectNextTorso()" class="next-selector">&#9658;</button>
       </div>
       <div class="right part">
-        <img v-bind:src="parts.arms[0].src" title="left arm"/>
-        <button class="prev-selector">&#9650;</button>
-        <button class="next-selector">&#9660;</button>
+        <img v-bind:src="parts.arms[rightArmIndex].src" title="left arm"/>
+        <button v-on:click="selectPreviousRightArm()" class="prev-selector">&#9650;</button>
+        <button v-on:click="selectNextRightArm()" class="next-selector">&#9660;</button>
       </div>
     </div>
     <div class="bottom-row">
       <div class="bottom part">
-        <img v-bind:src="parts.bases[0].src" title="left arm"/>
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img v-bind:src="parts.bases[baseIndex].src" title="left arm"/>
+        <button v-on:click="selectPreviousBase()" class="prev-selector">&#9668;</button>
+        <button v-on:click="selectNextBase()" class="next-selector">&#9658;</button>
       </div>
     </div>
   </div>
@@ -42,7 +42,54 @@ export default {
   data() {
     return {
       parts,
+      headIndex: 0,
+      leftArmIndex: 0,
+      torsoIndex: 0,
+      rightArmIndex: 0,
+      baseIndex: 0,
     };
+  },
+  methods: {
+    selectNextHead() {
+      this.headIndex = (this.headIndex + 1) % this.parts.heads.length;
+    },
+    selectPreviousHead() {
+      this.headIndex = this.headIndex === 0
+        ? this.parts.heads.length - 1
+        : this.headIndex - 1;
+    },
+    selectNextLeftArm() {
+      this.leftArmIndex = (this.leftArmIndex + 1) % this.parts.arms.length;
+    },
+    selectPreviousLeftArm() {
+      this.leftArmIndex = this.leftArmIndex === 0
+        ? this.parts.arms.length - 1
+        : this.leftArmIndex - 1;
+    },
+    selectNextTorso() {
+      this.torsoIndex = (this.torsoIndex + 1) % this.parts.torsos.length;
+    },
+    selectPreviousTorso() {
+      this.torsoIndex = this.torsoIndex === 0
+        ? this.parts.torsos.length - 1
+        : this.torsoIndex - 1;
+    },
+    selectNextRightArm() {
+      this.rightArmIndex = (this.rightArmIndex + 1) % this.parts.arms.length;
+    },
+    selectPreviousRightArm() {
+      this.rightArmIndex = this.rightArmIndex === 0
+        ? this.parts.arms.length - 1
+        : this.rightArmIndex - 1;
+    },
+    selectNextBase() {
+      this.baseIndex = (this.baseIndex + 1) % this.parts.bases.length;
+    },
+    selectPreviousBase() {
+      this.baseIndex = this.baseIndex === 0
+        ? this.parts.bases.length - 1
+        : this.baseIndex - 1;
+    },
   },
 };
 </script>
