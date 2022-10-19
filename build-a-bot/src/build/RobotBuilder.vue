@@ -2,41 +2,21 @@
   <div class="container">
     <button class="add-to-cart" @click="addRobotToCart()">Add to Cart</button>
     <div class="top-row">
-      <div :class="[saleBorderClass, 'top', 'part']">
-        <div class="name">
-          {{selectedRobot.head.title}}
-          <span class="sale" v-if="selectedRobot.head.onSale">
-            Sale!
-          </span>
-        </div>
-        <img :src="selectedRobot.head.src" title="head"/>
-        <button @click="selectPreviousHead()" class="prev-selector">&#9668;</button>
-        <button @click="selectNextHead()" class="next-selector">&#9658;</button>
-      </div>
+      <!-- <div class="name">
+        {{selectedRobot.head.title}}
+        <span class="sale" v-if="selectedRobot.head.onSale">
+          Sale!
+        </span>
+      </div> -->
+      <PartSelector :parts="parts.heads" position="top"/>
     </div>
     <div class="middle-row">
-      <div class="left part">
-        <img :src="selectedRobot.leftArm.src" title="left arm"/>
-        <button @click="selectPreviousLeftArm()" class="prev-selector">&#9650;</button>
-        <button @click="selectNextLeftArm()" class="next-selector">&#9660;</button>
-      </div>
-      <div class="center part">
-        <img :src="selectedRobot.torso.src" title="left arm"/>
-        <button @click="selectPreviousTorso()" class="prev-selector">&#9668;</button>
-        <button @click="selectNextTorso()" class="next-selector">&#9658;</button>
-      </div>
-      <div class="right part">
-        <img :src="selectedRobot.rightArm.src" title="left arm"/>
-        <button @click="selectPreviousRightArm()" class="prev-selector">&#9650;</button>
-        <button @click="selectNextRightArm()" class="next-selector">&#9660;</button>
-      </div>
+      <PartSelector :parts="parts.arms" position="left"/>
+      <PartSelector :parts="parts.torsos" position="center"/>
+      <PartSelector :parts="parts.arms" position="right"/>
     </div>
     <div class="bottom-row">
-      <div class="bottom part">
-        <img :src="selectedRobot.base.src" title="left arm"/>
-        <button @click="selectPreviousBase()" class="prev-selector">&#9668;</button>
-        <button @click="selectNextBase()" class="next-selector">&#9658;</button>
-      </div>
+      <PartSelector :parts="parts.bases" position="bottom"/>
     </div>
     <table>
       <thead>
@@ -57,6 +37,7 @@
 
 <script>
 import parts from '../data/parts';
+import PartSelector from './PartSelector.vue';
 import createdHookMixin from './created-hook-mixin';
 
 export default {
@@ -65,26 +46,22 @@ export default {
     return {
       parts,
       cart: [],
-      headIndex: 0,
-      leftArmIndex: 0,
-      torsoIndex: 0,
-      rightArmIndex: 0,
-      baseIndex: 0,
+      selectedRobot: {
+        head: {},
+        leftArm: {},
+        torso: {},
+        rightArm: {},
+        base: {},
+      },
     };
+  },
+  components: {
+    PartSelector,
   },
   mixins: [createdHookMixin],
   computed: {
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
-    },
-    selectedRobot() {
-      return {
-        head: parts.heads[this.headIndex],
-        leftArm: parts.arms[this.leftArmIndex],
-        torso: parts.torsos[this.torsoIndex],
-        rightArm: parts.arms[this.rightArmIndex],
-        base: parts.bases[this.baseIndex],
-      };
     },
   },
   methods: {
@@ -98,46 +75,6 @@ export default {
 
       // this.cart.push(Object.assign({}, robot, { cost }));
       this.cart.push({ ...robot, cost });
-    },
-    selectNextHead() {
-      this.headIndex = (this.headIndex + 1) % this.parts.heads.length;
-    },
-    selectPreviousHead() {
-      this.headIndex = this.headIndex === 0
-        ? this.parts.heads.length - 1
-        : this.headIndex - 1;
-    },
-    selectNextLeftArm() {
-      this.leftArmIndex = (this.leftArmIndex + 1) % this.parts.arms.length;
-    },
-    selectPreviousLeftArm() {
-      this.leftArmIndex = this.leftArmIndex === 0
-        ? this.parts.arms.length - 1
-        : this.leftArmIndex - 1;
-    },
-    selectNextTorso() {
-      this.torsoIndex = (this.torsoIndex + 1) % this.parts.torsos.length;
-    },
-    selectPreviousTorso() {
-      this.torsoIndex = this.torsoIndex === 0
-        ? this.parts.torsos.length - 1
-        : this.torsoIndex - 1;
-    },
-    selectNextRightArm() {
-      this.rightArmIndex = (this.rightArmIndex + 1) % this.parts.arms.length;
-    },
-    selectPreviousRightArm() {
-      this.rightArmIndex = this.rightArmIndex === 0
-        ? this.parts.arms.length - 1
-        : this.rightArmIndex - 1;
-    },
-    selectNextBase() {
-      this.baseIndex = (this.baseIndex + 1) % this.parts.bases.length;
-    },
-    selectPreviousBase() {
-      this.baseIndex = this.baseIndex === 0
-        ? this.parts.bases.length - 1
-        : this.baseIndex - 1;
     },
   },
 };
@@ -166,72 +103,6 @@ export default {
     display:flex;
     justify-content: space-around;
     border-top: none;
-  }
-  .head {
-    border-bottom: none;
-  }
-  .left {
-    border-right: none;
-  }
-  .right {
-    border-left: none;
-  }
-  .left img {
-    transform: rotate(-90deg);
-  }
-  .right img {
-    transform: rotate(90deg);
-  }
-  .bottom {
-    border-top: none;
-  }
-  .prev-selector {
-    position: absolute;
-    z-index:1;
-    top: -3px;
-    left: -28px;
-    width: 25px;
-    height: 171px;
-  }
-  .next-selector {
-    position: absolute;
-    z-index:1;
-    top: -3px;
-    right: -28px;
-    width: 25px;
-    height: 171px;
-  }
-  .center .prev-selector, .center .next-selector {
-    opacity:0.8;
-  }
-  .left .prev-selector {
-    top: -28px;
-    left: -3px;
-    width: 144px;
-    height: 25px;
-  }
-  .left .next-selector {
-    top: auto;
-    bottom: -28px;
-    left: -3px;
-    width: 144px;
-    height: 25px;
-  }
-  .right .prev-selector {
-    top: -28px;
-    left: 24px;
-    width: 144px;
-    height: 25px;
-  }
-  .right .next-selector {
-    top: auto;
-    bottom: -28px;
-    left: 24px;
-    width: 144px;
-    height: 25px;
-  }
-  .right .next-selector {
-    right: -3px;
   }
   .name {
     position: absolute;
