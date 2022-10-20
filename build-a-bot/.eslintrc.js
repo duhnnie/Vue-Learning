@@ -16,6 +16,7 @@ module.exports = {
     'no-unused-vars': 'warn',
     'padded-blocks': 'warn',
     'semi': 'warn',
+    'indent': 'warn',
     'linebreak-style': 0,
     'eol-last': 'warn',
     'operator-linebreak': 0
