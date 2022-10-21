@@ -17,6 +17,7 @@ module.exports = {
     'padded-blocks': 'warn',
     'semi': 'warn',
     'indent': 'warn',
+    'vue/no-unused-components': 'warn',
     'linebreak-style': 0,
     'eol-last': 'warn',
     'operator-linebreak': 0

@@ -80,10 +80,20 @@ import CollapsibleContent from '../shared/CollapsibleContent.vue';
 
 export default {
   name: 'RobotBuilder',
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) {
+      next(true);
+    } else {
+      const canLeave = window.confirm('You didn\'t add the robot to the cart, are you sure you want to leave?');
+
+      next(canLeave);
+    }
+  },
   data() {
     return {
       parts,
       cart: [],
+      addedToCart: false,
       selectedRobot: {
         head: {},
         leftArm: {},
@@ -114,6 +124,7 @@ export default {
 
       // this.cart.push(Object.assign({}, robot, { cost }));
       this.cart.push({ ...robot, cost });
+      this.addedToCart = true;
     },
   },
 };
@@ -175,7 +186,7 @@ export default {
 
   .preview {
     position: absolute;
-    top: -20px;
+    top: 0px;
     right: 0;
     width: 210px;
     height: 210px;
