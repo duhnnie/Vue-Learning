@@ -9,6 +9,7 @@ import RobotTorsos from '../parts/RobotTorsos.vue';
 import RobotBases from '../parts/RobotBases.vue';
 import StandardSidebar from '../sidebars/SidebarStandard.vue';
 import BuildSidebar from '../sidebars/SidebarBuild.vue';
+import ShoppingCart from '../cart/ShoppingCart.vue';
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -61,6 +62,11 @@ export default createRouter({
       name: 'PartInfo',
       component: PartInfo,
       props: true,
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: ShoppingCart,
     },
   ],
 });

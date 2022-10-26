@@ -13,6 +13,14 @@
             Robot Builder
           </router-link>
         </li>
+        <li class="nav-item cart">
+          <router-link active-class="active-link" to="/cart">
+            Cart
+          </router-link>
+          <div class="cart-items">
+            {{cart.length}}
+          </div>
+        </li>
       </ul>
     </nav>
   </header>
@@ -29,6 +37,11 @@
 <script>
 export default {
   name: 'App',
+  computed: {
+    cart() {
+      return this.$store.state.cart;
+    },
+  },
 };
 </script>
 
@@ -66,6 +79,7 @@ export default {
   }
 
   .nav-item {
+    position: relative;
     display: inline-block;
     padding: 5px 10px;
     font-size: 22px;
@@ -81,6 +95,24 @@ export default {
     text-decoration: none;
     color: inherit;
   }
+
+  .nav-link.cart {
+    position: relative;
+    margin-left: auto;
+    border-right: none;
+  }
+
+ .cart-items {
+  position: absolute;
+  top: -5px;
+  right: -9px;
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 100px;
+  background-color: mediumaquamarine;
+ }
 
   .active-link {
     color: white;

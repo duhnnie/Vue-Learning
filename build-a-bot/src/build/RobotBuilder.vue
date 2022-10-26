@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div v-if="parts" class="container">
     <div class="preview">
       <CollapsibleContent>
         <div class="preview-content">
@@ -55,31 +55,20 @@
         @partSelected="(part) => selectedRobot.base = part"
       />
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Robot</th>
-          <th>Cost</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="robot in cart" :key="robot.head.title">
-          <td>{{robot.head.title}}</td>
-          <td class="cost">{{robot.cost}}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
 
 <script>
-import parts from '../data/parts';
+// import parts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import createdHookMixin from './created-hook-mixin';
 import CollapsibleContent from '../shared/CollapsibleContent.vue';
 
 export default {
   name: 'RobotBuilder',
+  created() {
+    this.$store.dispatch('getParts');
+  },
   beforeRouteLeave(to, from, next) {
     if (this.addedToCart) {
       next(true);
@@ -91,7 +80,7 @@ export default {
   },
   data() {
     return {
-      parts,
+      // parts,
       cart: [],
       addedToCart: false,
       selectedRobot: {
@@ -109,6 +98,9 @@ export default {
   },
   mixins: [createdHookMixin],
   computed: {
+    parts() {
+      return this.$store.state.parts;
+    },
     saleBorderClass() {
       return this.selectedRobot.head.onSale ? 'sale-border' : '';
     },
@@ -122,8 +114,7 @@ export default {
         robot.rightArm.cost +
         robot.base.cost;
 
-      // this.cart.push(Object.assign({}, robot, { cost }));
-      this.cart.push({ ...robot, cost });
+      this.$store.commit('addRobotToCart', { ...robot, cost });
       this.addedToCart = true;
     },
   },
@@ -171,14 +162,6 @@ export default {
     width: 210px;
     padding: 3px;
     font-size: 16px;
-  }
-  td, th {
-    text-align: left;
-    padding: 5px;
-    padding-right: 20px;
-  }
-  .cost {
-    text-align: right;
   }
   .sale-border {
     border: 3px solid red;
