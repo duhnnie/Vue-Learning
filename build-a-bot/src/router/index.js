@@ -36,22 +36,22 @@ export default createRouter({
       component: BrowseParts,
       children: [
         {
-          path: '/heads',
+          path: 'heads',
           name: 'BrowseHeads',
           component: RobotHeads,
         },
         {
-          path: '/arms',
+          path: 'arms',
           name: 'BrowseArms',
           component: RobotArms,
         },
         {
-          path: '/torsos',
+          path: 'torsos',
           name: 'BrowseTorsos',
           component: RobotTorsos,
         },
         {
-          path: '/bases',
+          path: 'bases',
           name: 'BrowseBases',
           component: RobotBases,
         },
