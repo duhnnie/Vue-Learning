@@ -16,7 +16,7 @@
           </div>
         </div>
       </CollapsibleContent>
-      <button class="add-to-cart" @click="addRobotToCart()">Add to Cart</button>
+      <button class="add-to-cart" @click="addToCart()">Add to Cart</button>
     </div>
     <div class="top-row">
       <!-- <div class="name">
@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     ...mapActions('robots', ['addRobotToCart', 'getParts']),
-    addRobotToCart() {
+    addToCart() {
       const robot = this.selectedRobot;
       const cost = robot.head.cost +
         robot.leftArm.cost +
